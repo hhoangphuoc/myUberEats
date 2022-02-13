@@ -10,6 +10,8 @@ export default function BottomTabs() {
         margin: 10,
         marginHorizontal: 30,
         justifyContent: "space-between",
+        paddingBottom: 40,
+        paddingTop: 10,
       }}
     >
       <Icon icon="home" text="Home" />

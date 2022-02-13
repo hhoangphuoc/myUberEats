@@ -1,14 +1,6 @@
-import { View, Text, SafeAreaView } from "react-native";
-import Home from "./screens/Home";
+// import { View, Text, SafeAreaView } from "react-native";
+import RootNavigation from "./navigation";
 
 export default function App() {
-  return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
-      <Home />
-    </View>
-  );
+  return <RootNavigation />;
 }
