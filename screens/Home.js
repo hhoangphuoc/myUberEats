@@ -13,7 +13,7 @@ import { dummydata } from "../constant";
 const YELP_API_KEY =
   "Y8YO0rbWU0IUKMqTSIkbOywy7Qaj-jy0UFXgxbmPDrOgzaAASMJRuA5ybgKQnU_IaMxGNiBUDcP60q1MgHy0jSzAjYNE9FRMtlb1OOaFe452iD8fw0VoZgBZxRT_YXYx";
 
-export default function Home() {
+export default function Home({ navigation }) {
   //states of the components of the app
   const [restaurantData, setRestaurantData] = useState(
     dummydata.localRestaurants
@@ -57,7 +57,7 @@ export default function Home() {
         <Categories />
         <RestaurantItems
           restaurantData={restaurantData}
-          // navigation={navigation}
+          navigation={navigation}
         />
       </ScrollView>
       <View

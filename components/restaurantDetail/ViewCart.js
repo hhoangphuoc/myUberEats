@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Modal, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 import OrderItem from "./OrderItem";
-import firebase from "../../firebase";
+// import firebase from "../../firebase";
+import { addOrders } from "../../firebase";
+
 import LottieView from "lottie-react-native";
 
 export default function ViewCart({ navigation }) {
@@ -24,19 +26,19 @@ export default function ViewCart({ navigation }) {
 
   const addOrderToFireBase = () => {
     setLoading(true);
-    const db = firebase.firestore();
-    db.collection("orders")
-      .add({
-        items: items,
-        restaurantName: restaurantName,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      })
-      .then(() => {
-        setTimeout(() => {
-          setLoading(false);
-          navigation.navigate("OrderCompleted");
-        }, 2500);
-      });
+    // const db = firebase.firestore();
+    // db.collection("orders")
+    //   .add({
+    //     items: items,
+    //     restaurantName: restaurantName,
+    //     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    //   })
+    addOrders(items, restaurantName).then(() => {
+      setTimeout(() => {
+        setLoading(false);
+        navigation.navigate("OrderCompleted");
+      }, 2500);
+    });
   };
 
   const styles = StyleSheet.create({
@@ -91,8 +93,8 @@ export default function ViewCart({ navigation }) {
               <TouchableOpacity
                 style={{
                   marginTop: 20,
-                  backgroundColor: "black",
-                  alignItems: "center",
+                  backgroundColor: "rgba(0,0,0,0.9)",
+                  // alignItems: "center",
                   padding: 13,
                   borderRadius: 30,
                   width: 300,
@@ -103,18 +105,34 @@ export default function ViewCart({ navigation }) {
                   setModalVisible(false);
                 }}
               >
-                <Text style={{ color: "white", fontSize: 20 }}>Checkout</Text>
-                <Text
-                  style={{
-                    position: "absolute",
-                    right: 20,
-                    color: "white",
-                    fontSize: 15,
-                    top: 17,
-                  }}
-                >
-                  {total ? totalUSD : ""}
+                <Text style={{ color: "white", fontSize: 20, marginLeft: 20 }}>
+                  Checkout
                 </Text>
+                {total ? (
+                  <Text
+                    style={{
+                      position: "absolute",
+                      right: 20,
+                      color: "white",
+                      fontSize: 20,
+                      top: 15,
+                    }}
+                  >
+                    $ {totalUSD}
+                  </Text>
+                ) : (
+                  <Text
+                    style={{
+                      position: "absolute",
+                      right: 20,
+                      color: "white",
+                      fontSize: 20,
+                      top: 15,
+                    }}
+                  >
+                    ""
+                  </Text>
+                )}
               </TouchableOpacity>
             </View>
           </View>
@@ -141,7 +159,7 @@ export default function ViewCart({ navigation }) {
             justifyContent: "center",
             flexDirection: "row",
             position: "absolute",
-            bottom: 130,
+            bottom: 100,
             zIndex: 999,
           }}
         >
@@ -155,9 +173,9 @@ export default function ViewCart({ navigation }) {
             <TouchableOpacity
               style={{
                 marginTop: 20,
-                backgroundColor: "black",
+                backgroundColor: "rgba(0,0,0,0.85)",
                 flexDirection: "row",
-                justifyContent: "flex-end",
+                justifyContent: "center",
                 padding: 15,
                 borderRadius: 30,
                 width: 300,
@@ -168,12 +186,50 @@ export default function ViewCart({ navigation }) {
               <Text style={{ color: "white", fontSize: 20, marginRight: 30 }}>
                 View Cart
               </Text>
-              <Text style={{ color: "white", fontSize: 20 }}>{totalUSD}</Text>
+              <Text style={{ color: "white", fontSize: 20 }}>${totalUSD}</Text>
             </TouchableOpacity>
           </View>
         </View>
       ) : (
         <></>
+        // <View
+        //   style={{
+        //     flex: 1,
+        //     alignItems: "center",
+        //     justifyContent: "center",
+        //     flexDirection: "row",
+        //     position: "absolute",
+        //     bottom: 120,
+        //     zIndex: 999,
+        //   }}
+        // >
+        //   <View
+        //     style={{
+        //       flexDirection: "row",
+        //       justifyContent: "center",
+        //       width: "100%",
+        //     }}
+        //   >
+        //     <TouchableOpacity
+        //       style={{
+        //         marginTop: 20,
+        //         backgroundColor: "rgba(0,0,0,0.8)",
+        //         flexDirection: "row",
+        //         justifyContent: "center",
+        //         padding: 15,
+        //         borderRadius: 30,
+        //         width: 300,
+        //         position: "relative",
+        //       }}
+        //       onPress={() => setModalVisible(true)}
+        //     >
+        //       <Text style={{ color: "white", fontSize: 20, marginRight: 30 }}>
+        //         View Cart
+        //       </Text>
+        //       <Text style={{ color: "white", fontSize: 20 }}>{totalUSD}</Text>
+        //     </TouchableOpacity>
+        //   </View>
+        // </View>
       )}
       {loading ? (
         <View
